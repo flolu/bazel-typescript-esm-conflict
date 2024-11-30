@@ -1,0 +1,9 @@
+{
+  "extends": "@tsconfig/node22/tsconfig.json",
+  "compilerOptions": {
+    "noErrorTruncation": true,
+    "experimentalDecorators": true,
+    "declaration": true
+  },
+  "exclude": ["dist", "node_modules", "bazel-*"]
+}

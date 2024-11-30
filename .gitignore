@@ -1,0 +1,18 @@
+# Node
+node_modules
+dist
+
+# Bazel
+bazel-*
+
+# macOS
+.DS_Store
+
+# JetBrains
+.idea
+
+# Jest
+coverage
+
+# SWC
+.swc

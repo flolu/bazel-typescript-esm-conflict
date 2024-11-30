@@ -1,0 +1,12 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "entry": [
+    "src/index.ts",
+    "**/*.spec.ts",
+    "jest.config.cjs",
+    "jest-bazel.config.cjs"
+  ],
+  "ignore": ["bazel-*/**"],
+  "ignoreBinaries": ["bazel"],
+  "ignoreDependencies": ["@swc/plugin-transform-imports", "jest-junit"]
+}

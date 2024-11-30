@@ -1,0 +1,76 @@
+"bazel-typescript-esm-conflict"
+
+module(
+    name = "bazel-typescript-esm-conflict",
+    version = "0.0.0",
+    compatibility_level = 1,
+)
+
+###
+# This is required to make Bazel run on macOS
+# https://github.com/bazelbuild/platforms/releases
+###
+bazel_dep(name = "platforms", version = "0.0.10", dev_dependency = True)
+
+###
+# Setup rules_js
+# https://github.com/aspect-build/bazel-lib/releases
+# https://github.com/aspect-build/rules_js/releases
+# https://github.com/bazelbuild/rules_nodejs/releases
+###
+bazel_dep(name = "aspect_bazel_lib", version = "2.9.3", dev_dependency = True)
+bazel_dep(name = "aspect_rules_js", version = "2.1.0", dev_dependency = True)
+bazel_dep(name = "rules_nodejs", version = "6.3.2", dev_dependency = True)
+
+node = use_extension("@rules_nodejs//nodejs:extensions.bzl", "node", dev_dependency = True)
+use_repo(node, "nodejs_toolchains")
+
+# https://github.com/bazelbuild/rules_nodejs/blob/main/nodejs/private/node_versions.bzl
+# https://hub.docker.com/_/node
+# https://github.com/bazelbuild/rules_nodejs/blob/943800d8d601872dae53f5c1e17414d316834cac/nodejs/repositories.bzl#L16
+# https://github.com/bazelbuild/rules_nodejs/blob/main/nodejs/private/node_versions.bzl
+node.toolchain(node_version = "22.11.0")
+
+npm = use_extension("@aspect_rules_js//npm:extensions.bzl", "npm", dev_dependency = True)
+npm.npm_translate_lock(
+    name = "npm",
+    lifecycle_hooks_no_sandbox = False,
+    npmrc = "@//:.npmrc",
+    pnpm_lock = "//:pnpm-lock.yaml",
+    verify_node_modules_ignored = "//:.bazelignore",
+)
+use_repo(npm, "npm")
+
+###
+# Setup rules_ts
+# https://github.com/aspect-build/rules_ts/releases
+# https://github.com/aspect-build/rules_ts/blob/main/ts/private/versions.bzl
+###
+
+bazel_dep(name = "aspect_rules_ts", version = "3.2.1", dev_dependency = True)
+
+rules_ts_ext = use_extension(
+    "@aspect_rules_ts//ts:extensions.bzl",
+    "ext",
+    dev_dependency = True,
+)
+rules_ts_ext.deps()
+use_repo(rules_ts_ext, "npm_typescript")
+
+###
+# Setup rules_swc
+# https://github.com/aspect-build/rules_swc/releases
+###
+bazel_dep(name = "aspect_rules_swc", version = "2.0.1", dev_dependency = True)
+
+###
+# Setup rules_jest
+# https://github.com/aspect-build/rules_jest/releases
+###
+bazel_dep(name = "aspect_rules_jest", version = "0.22.0", dev_dependency = True)
+
+###
+# Setup rules_pkg
+# https://github.com/bazelbuild/rules_pkg/releases
+###
+bazel_dep(name = "rules_pkg", version = "1.0.1")

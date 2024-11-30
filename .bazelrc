@@ -1,0 +1,19 @@
+common --enable_bzlmod
+
+# Ensures actions don't pick up env changes
+build --incompatible_strict_action_env
+
+test --test_output=errors
+
+###
+# aspect-build/rules_ts
+# passes an argument `--skipLibCheck` to *every* spawn of tsc
+build --@aspect_rules_ts//ts:skipLibCheck=always
+fetch --@aspect_rules_ts//ts:skipLibCheck=always
+query --@aspect_rules_ts//ts:skipLibCheck=always
+###
+
+# To select right the linux Node.js toolchain for the image layer
+# https://github.com/aspect-build/rules_js/blob/a8297609b6ed6515648b3c2b9b48c0eb3b481852/e2e/js_image_oci/src/BUILD.bazel#L48C28-L48C96
+build --extra_toolchains=@nodejs_toolchains//:linux_arm64_toolchain_target
+# build --extra_toolchains=@nodejs_toolchains//:linux_amd64_toolchain_target
