@@ -15,7 +15,7 @@
     "test:knip": "knip",
     "test:spell": "cspell **",
     "test:specs": "NODE_OPTIONS='--experimental-vm-modules' jest --runInBand --config=jest.config.cjs --detectOpenHandles",
-    "test:bazel": "bazel test -- //...",
+    "test:bazel": "bazel test //...",
     "test:lint": "biome lint --error-on-warnings .",
     "test:format": "biome check --write ."
   },
